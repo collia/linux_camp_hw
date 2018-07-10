@@ -52,7 +52,7 @@ static int __init wq_test_init(void){
 }
  
 static void __exit wq_test_exit(void){
-        del_timer_sync(&b_timer);
+        del_timer(&b_timer);
 }
  
 module_init(wq_test_init);
