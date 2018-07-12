@@ -53,6 +53,8 @@ static int __init wq_test_init(void){
  
 static void __exit wq_test_exit(void){
         del_timer(&b_timer);
+        cancel_work_sync(&work);
+        cancel_delayed_work_sync(&delayed_work);
 }
  
 module_init(wq_test_init);
