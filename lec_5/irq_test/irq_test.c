@@ -54,18 +54,18 @@ static int __init irq_test_init(void){
                 return -ENODEV;
         }
 
-         // This next call requests an interrupt line
-        result = request_irq(irqNumber,             // The interrupt number requested
-                             (irq_handler_t) irq_handler, // The pointer to the handler function below
-                             IRQF_TRIGGER_RISING,   // Interrupt on rising edge (button press, not release)
-                             "test_gpio_handler",    // Used in /proc/interrupts to identify the owner
-                             NULL);                 // The *dev_id for shared interrupt lines, NULL is okay
+        result = request_irq(irqNumber,   
+                             (irq_handler_t) irq_handler,
+                             IRQF_TRIGGER_RISING,
+                             "test_gpio_handler",
+                             &irqNumber);      
         
         printk(KERN_INFO "GPIO_TEST: The interrupt request result is: %d\n", result);
         return result;
 }
  
 static void __exit irq_test_exit(void){
+        free_irq(irqNumber, NULL);
         gpio_unexport(gpioButton);
         gpio_free(gpioButton);
         del_timer_sync(&b_timer);
