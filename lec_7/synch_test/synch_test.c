@@ -25,7 +25,7 @@ struct test_task_info {
         bool need_sleep;
 };
 
-struct test_task_info tasks[TASK_NUMBER];
+static struct test_task_info tasks[TASK_NUMBER];
 
 
 static int synch_test_thread(void *data)
