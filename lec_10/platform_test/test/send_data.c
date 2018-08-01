@@ -7,8 +7,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#ifdef QEMU
+#define MEM_BASE 0x20000000
+#define REG_BASE 0x20001000
+#else
 #define MEM_BASE 0x9f200000
 #define REG_BASE  0x9f201000
+#endif
+
 #define MEM_SIZE	(1024)
 #define REG_SIZE	(8)
 

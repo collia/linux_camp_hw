@@ -6,6 +6,11 @@ then
     KERNEL_PATH=${QEMU_PATH}linux-4.17.2/
     make ARCH=i386 -C $KERNEL_PATH M=`pwd` $2
 
+    if [ $? != 0 ]
+    then
+       exit -1
+    fi
+    
     make -C test $2
     
     if [ $? == 0 ]
@@ -14,7 +19,7 @@ then
         then
             cp *.ko $QEMU_PATH/update
             cp test/send_data $QEMU_PATH/update
-            cp test/send_data2 $QEMU_PATH/update
+            cp test/receive_data $QEMU_PATH/update
             $QEMU_PATH/../run.sh
         elif [ "$2" == "debug" ]
         then
@@ -33,6 +38,6 @@ else
     then
         cp *.ko ../../../bb_soft/build/busybox/_install
         cp test/send_data  ../../../bb_soft/build/busybox/_install
-        cp test/send_data2  ../../../bb_soft/build/busybox/_install
+        cp test/receive_data  ../../../bb_soft/build/busybox/_install
     fi
 fi
