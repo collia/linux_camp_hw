@@ -27,7 +27,7 @@ then
             $QEMU_PATH/../rundebug.sh
         fi
     fi
-else
+elif [ "$1" = "bbb" ]; then
     KERNEL_PATH=`pwd`/../../../bb_soft/build/linux/
     docker run --rm=true -v "$(pwd):/home/user/linux_camp_modules" -v "$KERNEL_PATH:/home/user/linux_camp" build-bbb-eabi \
            "cd /home/user/linux_camp_modules && make -C /home/user/linux_camp  M=/home/user/linux_camp_modules C=1 $2"
@@ -40,4 +40,10 @@ else
         cp test/send_data  ../../../bb_soft/build/busybox/_install
         cp test/receive_data  ../../../bb_soft/build/busybox/_install
     fi
+else
+    QEMU_PATH=`pwd`/../../../qemu/build/
+    KERNEL_PATH=${QEMU_PATH}linux-4.17.2/
+
+    docker run --rm=true -v "$(pwd):/home/user/module" -v "$KERNEL_PATH:/home/user/linux_camp" indent-x86 
+
 fi
