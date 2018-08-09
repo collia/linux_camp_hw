@@ -266,7 +266,7 @@ static void plat_dummy_write_work(struct work_struct *work)
                 for(i = 0; i < count; i++) {
                         data = *my_device->wrp++;
                         plat_dummy_mem_write8(my_device, i, data);
-                        if (my_device->wrp == my_device->end)
+                        if (my_device->wrp == my_device->wend)
                                 my_device->wrp = my_device->write_buffer;
                 }
                 plat_dummy_reg_write32(my_device, PLAT_WRITE_SIZE_REG, count);
@@ -292,7 +292,7 @@ static void dummy_init_data_buffer(struct plat_dummy_device *my_device)
 	my_device->end = my_device->buffer + my_device->buffersize;
 	my_device->rp = my_device->wp = my_device->buffer;
     my_device->wrp = my_device->wwp = my_device->write_buffer;
-    my_device->wend = my_device->buffer + my_device->buffersize;
+    my_device->wend = my_device->write_buffer + my_device->buffersize;
 }
 
 static const struct of_device_id plat_dummy_of_match[] = {
