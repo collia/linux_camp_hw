@@ -1,0 +1,83 @@
+/*
+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+/dts-v1/;
+
+#include "am33xx.dtsi"
+#include "am335x-bone-common.dtsi"
+#include "am335x-boneblack-common.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/am33xx.h>
+
+/ {
+	model = "TI AM335x BeagleBone Black";
+	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+
+};
+
+&cpu0_opp_table {
+	/*
+	 * All PG 2.0 silicon may not support 1GHz but some of the early
+	 * BeagleBone Blacks have PG 2.0 silicon which is guaranteed
+	 * to support 1GHz OPP so enable it for PG 2.0 on this board.
+	 */
+	oppnitro-1000000000 {
+		opp-supported-hw = <0x06 0x0100>;
+	};
+};
+
+
+&am33xx_pinmux {
+    /*
+     * Keyboard lines:
+     * Scan
+     * GPIO_1_12 (GPMC_AD12) - 0x830
+     * GPIO_0_26 (GPMC_AD10) - 0x828
+     * GPIO_1_14 (GPMC_AD14) - 0x838
+     * GPIO_2_1  (GPMC_CLK)  - 0x88c
+     * Read
+     * GPIO_1_13 (GPMC_AD13) - 0x834
+     * GPIO_1_15 (GPMC_AD15) - 0x83c
+     * GPIO_0_27 (GPMC_AD11) - 0x82c
+     * GPIO_1_17 (GPMC_A1)   - 0x844
+     *
+     */
+
+    hw3_keyb_pins: hw3_keyb_pins {
+		pinctrl-single,pins = <            
+			AM33XX_IOPAD(0x830, PIN_OUTPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x828, PIN_OUTPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x838, PIN_OUTPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x88c, PIN_OUTPUT | MUX_MODE7)
+
+			AM33XX_IOPAD(0x834, PIN_INPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x83c, PIN_INPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x82c, PIN_INPUT | MUX_MODE7)	
+			AM33XX_IOPAD(0x844, PIN_INPUT | MUX_MODE7)
+		>;
+	};
+
+};
+
+
+/ {
+	hw3_keyb {
+		compatible = "globallogic,hw3_keyb";
+		scan0-gpios = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+		scan1-gpios = <&gpio0 26 GPIO_ACTIVE_HIGH>;
+		scan2-gpios = <&gpio1 14 GPIO_ACTIVE_HIGH>;
+		scan3-gpios = <&gpio2 1  GPIO_ACTIVE_HIGH>;
+		read0-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+		read1-gpios = <&gpio1 15 GPIO_ACTIVE_HIGH>;
+		read2-gpios = <&gpio0 27 GPIO_ACTIVE_HIGH>;
+		read3-gpios = <&gpio1 17 GPIO_ACTIVE_HIGH>;
+		debounce-delay-ms = <5>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&hw3_keyb_pins>;
+	};
+};
+
